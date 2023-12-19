@@ -1,5 +1,8 @@
 <script>
-  let count1 = 0;
+  export let initialCount = 0;
+  export let maxCount = 100;
+
+  let count1 = initialCount;
   let count2 = 0;
 
   let string = 'Count2 is 0';
@@ -13,7 +16,9 @@
   $: setCount2(count1);
   $: string = `Count2 is ${count2}`;
 
-  const increment1 = () => (count1 += 1);
+  const increment1 = () => {
+    if (count1 < maxCount) count1 += 1;
+  };
   const reset = () => (count1 = count2 = 0);
 </script>
 
