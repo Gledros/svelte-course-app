@@ -11,7 +11,7 @@
 
 <h1>Hello {name.toLocaleLowerCase()}!</h1>
 
-<Counter {...props} />
+<Counter {...props} x={150} />
 
 <style>
   h1 {

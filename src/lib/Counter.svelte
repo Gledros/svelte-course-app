@@ -2,6 +2,14 @@
   export let initialCount = 0;
   export let maxCount = 100;
 
+  /*
+    $$props returns all props passed to the component, even those that aren't
+    declared on the component itself. If you use $$restProps it gives only the
+    non declared ones.
+  */
+  console.log($$props);
+  console.log($$restProps);
+
   let count1 = initialCount;
   let count2 = 0;
 
