@@ -3,12 +3,15 @@
 
   let name = 'Svelte';
 
-  const maxCount = 6;
+  const props = {
+    maxCount: 8,
+    initialCount: 3,
+  };
 </script>
 
 <h1>Hello {name.toLocaleLowerCase()}!</h1>
 
-<Counter initialCount={3} {maxCount} />
+<Counter {...props} />
 
 <style>
   h1 {
