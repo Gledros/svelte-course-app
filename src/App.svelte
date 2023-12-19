@@ -1,20 +1,9 @@
 <script>
-  import Counter from './lib/Counter.svelte';
-
-  let name = 'Svelte';
-
-  const props = {
-    maxCount: 8,
-    initialCount: 3,
-  };
+  import Button from './lib/Button.svelte';
 </script>
 
-<h1>Hello {name.toLocaleLowerCase()}!</h1>
+<Button>something</Button>
 
-<Counter {...props} x={150} />
-
-<style>
-  h1 {
-    color: red;
-  }
-</style>
+<!-- If it's empty inside the Button tags it uses the default string -->
+<Button></Button>
+<Button />
