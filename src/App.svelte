@@ -7,7 +7,7 @@
   };
 </script>
 
-<Button {...buttonProps}>something</Button>
+<Button {...buttonProps} bgColor="grey" textColor="orange">something</Button>
 
 <!-- If it's empty inside the Button tags it uses the default string -->
 <Button shadow={true}></Button>

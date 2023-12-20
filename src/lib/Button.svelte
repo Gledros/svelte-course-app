@@ -1,9 +1,13 @@
 <script>
   export let size = 'normal';
   export let shadow = false;
+  export let bgColor = 'inherit';
+  export let textColor = 'inherit';
 </script>
 
 <button
+  style:--buttonBgColor={bgColor}
+  style:--buttonTextColor={textColor}
   class:size-small={size === 'small'}
   class:size-big={size === 'big'}
   class:shadow
@@ -14,8 +18,8 @@
 <style lang="scss">
   button {
     border: none;
-    background-color: variables.$color_primary;
-    color: whitesmoke;
+    background-color: var(--buttonBgColor);
+    color: var(--buttonTextColor);
     font-weight: bold;
     padding: 0.5rem 1.5rem;
 
