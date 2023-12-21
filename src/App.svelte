@@ -1,5 +1,6 @@
 <script>
   import Button from './lib/Button.svelte';
+  import FaAngellist from 'svelte-icons/fa/FaAngellist.svelte';
 
   let buttonProps = {
     size: 'big',
@@ -7,8 +8,7 @@
   };
 </script>
 
-<Button {...buttonProps} bgColor="grey" textColor="orange">something</Button>
-
-<!-- If it's empty inside the Button tags it uses the default string -->
-<Button shadow={true}></Button>
-<Button size="small" />
+<Button {...buttonProps}>
+  <div style:width="2rem" slot="leftContent"><FaAngellist /></div>
+  something
+</Button>

@@ -3,6 +3,8 @@
   export let shadow = false;
   export let bgColor = 'inherit';
   export let textColor = 'inherit';
+
+  console.log($$slots);
 </script>
 
 <button
@@ -11,12 +13,20 @@
   class:size-small={size === 'small'}
   class:size-big={size === 'big'}
   class:shadow
+  class:has-left={$$slots.leftContent}
 >
-  <slot>Hey, listen!</slot></button
->
+  {#if $$slots.leftContent}
+    <div class="left-content">
+      <slot name="leftContent" />
+    </div>
+  {/if}
+  <slot>Hey, listen!</slot>
+</button>
 
 <style lang="scss">
   button {
+    display: flex;
+    align-items: center;
     border: none;
     background-color: var(--buttonBgColor);
     color: var(--buttonTextColor);
@@ -26,6 +36,10 @@
     transition:
       background-color 1.5s ease,
       color 0.5s ease;
+
+    .left-content {
+      margin-right: 0.5rem;
+    }
 
     &.size-small {
       padding: 0.25rem 0.75rem;
