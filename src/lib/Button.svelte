@@ -4,7 +4,7 @@
   export let bgColor = 'inherit';
   export let textColor = 'inherit';
 
-  console.log($$slots);
+  let isLeftHovered = false;
 </script>
 
 <button
@@ -16,8 +16,13 @@
   class:has-left={$$slots.leftContent}
 >
   {#if $$slots.leftContent}
-    <div class="left-content">
-      <slot name="leftContent" />
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div
+      class="left-content"
+      on:mouseenter={() => (isLeftHovered = true)}
+      on:mouseleave={() => (isLeftHovered = false)}
+    >
+      <slot name="leftContent" {isLeftHovered} />
     </div>
   {/if}
   <slot>Hey, listen!</slot>
@@ -39,6 +44,7 @@
 
     .left-content {
       margin-right: 0.5rem;
+      height: 1.5rem;
     }
 
     &.size-small {
