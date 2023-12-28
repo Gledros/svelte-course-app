@@ -1,15 +1,54 @@
 <script>
+  import Button from './Button.svelte';
+
   export let todos;
+
+  let inputText = '';
+
+  const handleAddTodo = () => {
+    console.log(inputText);
+  };
 </script>
 
-<ul>
-  {#each todos as todo, index (todo.id)}
-    <li>{index + 1} > {todo.title}</li>
-  {/each}
-</ul>
+<div class="todo-list-wrapper">
+  <ul>
+    {#each todos as { id, title }, index (id)}
+      <li>{index + 1} > {title}</li>
+    {/each}
+  </ul>
+
+  <form
+    class="add-todo-form"
+    action=""
+    on:submit|preventDefault={handleAddTodo}
+  >
+    <input type="text" bind:value={inputText} />
+    <Button type="submit">Add</Button>
+  </form>
+</div>
 
 <style>
-  li {
-    list-style-type: none;
+  .todo-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  input {
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 </style>

@@ -34,6 +34,7 @@
   button {
     display: flex;
     align-items: center;
+    justify-content: center;
     border: none;
     background-color: var(--buttonBgColor);
     color: var(--buttonTextColor);
