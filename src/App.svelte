@@ -1,21 +1,29 @@
 <script>
-  import Button from './lib/Button.svelte';
-  import FaCloudSun from 'svelte-icons/fa/FaCloudSun.svelte';
-  import FaCloudSunRain from 'svelte-icons/fa/FaCloudSunRain.svelte';
+  import TodoList from './lib/TodoList.svelte';
+  import { v4 as uuid } from 'uuid';
 
-  let buttonProps = {
-    size: 'big',
-    shadow: true,
-  };
+  const todos = [
+    {
+      id: uuid(),
+      title: 'Todo 1',
+      completed: false,
+    },
+    {
+      id: uuid(),
+      title: 'Todo 2',
+      completed: false,
+    },
+    {
+      id: uuid(),
+      title: 'Todo 3',
+      completed: false,
+    },
+    {
+      id: uuid(),
+      title: 'Todo 4',
+      completed: false,
+    },
+  ];
 </script>
 
-<Button {...buttonProps} on:click|once={() => alert(true)} disabled>
-  <div style:width="2rem" slot="leftContent" let:isLeftHovered>
-    {#if !isLeftHovered}
-      <FaCloudSun />
-    {:else}
-      <FaCloudSunRain />
-    {/if}
-  </div>
-  weather forecast
-</Button>
+<TodoList {todos} />
