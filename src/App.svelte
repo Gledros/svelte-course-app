@@ -16,7 +16,7 @@
   outside the other named slots (Don't know if it's a bug, but it's not working
   as expected according to the svelte course).
 -->
-<Button {...buttonProps}>
+<Button {...buttonProps} on:click|once={() => alert(true)}>
   <div style:width="2rem" slot="leftContent" let:isLeftHovered>
     {#if !isLeftHovered}
       <FaCloudSun />
