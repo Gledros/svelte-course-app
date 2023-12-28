@@ -26,8 +26,6 @@
     },
   ];
 
-  $: console.log(todos);
-
   const handleAddTodo = (event) => {
     todos = [
       ...todos,

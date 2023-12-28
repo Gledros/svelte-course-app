@@ -8,24 +8,9 @@
     afterUpdate,
   } from 'svelte';
 
-  onMount(() => {
-    console.log('mounted');
-
-    return () => {
-      console.log('destroy 2');
-    };
-  });
-
-  onDestroy(() => {
-    console.log('destroyed');
-  });
-
-  beforeUpdate(() => {
-    if (listUl) console.log(listUl?.offsetHeight);
-  });
-
   afterUpdate(() => {
-    if (listUl) console.log(listUl.offsetHeight);
+    if (autoscroll) listUl.scrollTo(0, listUl.scrollHeight);
+    autoscroll = false;
   });
 
   export let todos = [];
@@ -35,6 +20,13 @@
 
   let input, listUl;
   let inputText = '';
+  let autoscroll = false;
+  let previousTodos = todos;
+
+  $: {
+    autoscroll = todos.length > previousTodos.length;
+    previousTodos = todos;
+  }
 
   const dispatch = createEventDispatcher();
 
@@ -121,15 +113,34 @@
 
   ul {
     list-style: none;
-    padding: 0;
+    padding: 0 0.5rem;
     margin: 0;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-height: 15rem;
+    max-width: 20rem;
+    overflow: auto;
+  }
+
+  ul::-webkit-scrollbar {
+    width: 0.75rem; /* width of the entire scrollbar */
+  }
+
+  ul::-webkit-scrollbar-track {
+    background: rgb(225, 225, 225); /* color of the tracking area */
+    border-radius: 0.4rem;
+  }
+
+  ul::-webkit-scrollbar-thumb {
+    background-color: var(--buttonBgColor); /* color of the scroll thumb */
+    border-radius: 0.4rem; /* roundness of the scroll thumb */
+    border: 3px solid var(--buttonBgColor); /*rgb(122, 121, 117); /* creates padding around scroll thumb */
   }
 
   li {
     display: flex;
+
     justify-content: space-between;
     gap: 0.5rem;
   }
