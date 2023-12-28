@@ -39,6 +39,9 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #767676;
+    border-radius: 2px;
   }
 
   input {
