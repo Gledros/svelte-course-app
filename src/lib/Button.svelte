@@ -9,6 +9,7 @@
 
 <button
   on:click
+  {...$$restProps}
   style:--buttonBgColor={bgColor}
   style:--buttonTextColor={textColor}
   class:size-small={size === 'small'}
@@ -48,6 +49,13 @@
       height: 1.5rem;
     }
 
+    &:disabled {
+      background-color: rgb(48, 48, 48);
+      color: rgb(236, 233, 233);
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
     &.size-small {
       padding: 0.25rem 0.75rem;
     }
@@ -60,7 +68,7 @@
       box-shadow: 0 0 0.5rem rgba(1, 1, 1, 1);
     }
 
-    &:hover {
+    &:hover:enabled {
       background-color: variables.$color_secondary;
       color: black;
     }
