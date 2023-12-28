@@ -29,7 +29,17 @@
       {#each todos as { id, title, completed } (id)}
         <li>
           <label for={title}>
-            <input type="checkbox" checked={completed} />
+            <input
+              on:input={(event) => {
+                event.currentTarget.checked = completed;
+                dispatch('toggleTodo', {
+                  id: id,
+                  completed: !completed,
+                });
+              }}
+              type="checkbox"
+              checked={completed}
+            />
             {title}
           </label>
           <Button on:click={() => handleRemoveTodo(id)}>Remove</Button>

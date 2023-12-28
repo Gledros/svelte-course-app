@@ -22,7 +22,7 @@
     },
   ];
 
-  $: console.log(todos.length);
+  $: console.log(todos);
 
   const handleAddTodo = (event) => {
     todos = [
@@ -34,7 +34,18 @@
   const clearTodos = () => (todos = []);
 
   const removeTodo = ({ detail }) =>
-    (todos = todos.filter((item) => item.id !== detail.id));
+    (todos = todos.filter((todo) => todo.id !== detail.id));
+
+  const toggleTodo = (event) => {
+    todos = todos.map((todo) => {
+      if (todo.id === event.detail.id)
+        return {
+          ...todo,
+          completed: event.detail.completed,
+        };
+      return todo;
+    });
+  };
 </script>
 
 <TodoList
@@ -42,4 +53,5 @@
   on:addTodo={handleAddTodo}
   on:clearTodos={clearTodos}
   on:removeTodo={removeTodo}
+  on:toggleTodo={toggleTodo}
 />
