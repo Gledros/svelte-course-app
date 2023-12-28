@@ -1,10 +1,12 @@
 <svelte:options immutable={true} />
 
 <script>
+  import Button from './lib/Button.svelte';
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
 
   let todoList;
+  let displayList = true;
 
   let todos = [
     {
@@ -53,11 +55,32 @@
   };
 </script>
 
-<TodoList
-  {todos}
-  bind:this={todoList}
-  on:addTodo={handleAddTodo}
-  on:clearTodos={clearTodos}
-  on:removeTodo={removeTodo}
-  on:toggleTodo={toggleTodo}
-/>
+<div>
+  {#if displayList}
+    <TodoList
+      {todos}
+      bind:this={todoList}
+      on:addTodo={handleAddTodo}
+      on:clearTodos={clearTodos}
+      on:removeTodo={removeTodo}
+      on:toggleTodo={toggleTodo}
+    />
+  {/if}
+
+  <Button on:click={() => (displayList = !displayList)}>
+    {#if displayList}
+      Hide
+    {:else}
+      Show
+    {/if}
+    list
+  </Button>
+</div>
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>

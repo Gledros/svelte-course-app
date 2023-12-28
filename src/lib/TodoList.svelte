@@ -1,14 +1,39 @@
 <script>
   import Button from './Button.svelte';
-  import { createEventDispatcher } from 'svelte';
+  import {
+    createEventDispatcher,
+    onDestroy,
+    onMount,
+    beforeUpdate,
+    afterUpdate,
+  } from 'svelte';
+
+  onMount(() => {
+    console.log('mounted');
+
+    return () => {
+      console.log('destroy 2');
+    };
+  });
+
+  onDestroy(() => {
+    console.log('destroyed');
+  });
+
+  beforeUpdate(() => {
+    if (listUl) console.log(listUl?.offsetHeight);
+  });
+
+  afterUpdate(() => {
+    if (listUl) console.log(listUl.offsetHeight);
+  });
 
   export let todos = [];
 
-  /* read-only props use 'const' and doesn't necessarily be functions */
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
 
-  let input;
+  let input, listUl;
   let inputText = '';
 
   const dispatch = createEventDispatcher();
@@ -30,11 +55,12 @@
   {#if todos.length === 0}
     <p>This list looks empty</p>
   {:else}
-    <ul>
+    <ul class="todo-list" bind:this={listUl}>
       {#each todos as { id, title, completed } (id)}
         <li>
-          <label for={title}>
+          <label for={id}>
             <input
+              {id}
               on:input={(event) => {
                 event.currentTarget.checked = completed;
                 dispatch('toggleTodo', {
@@ -58,7 +84,12 @@
     action=""
     on:submit|preventDefault={handleAddTodo}
   >
-    <input bind:this={input} type="text" bind:value={inputText} />
+    <input
+      name="todo-item"
+      bind:this={input}
+      type="text"
+      bind:value={inputText}
+    />
     <Button type="submit" disabled={!inputText}>Add</Button>
   </form>
   <Button on:click={() => dispatch('clearTodos')} disabled={todos.length === 0}
@@ -100,5 +131,6 @@
   li {
     display: flex;
     justify-content: space-between;
+    gap: 0.5rem;
   }
 </style>
