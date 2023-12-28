@@ -1,16 +1,15 @@
 <script>
   import Button from './Button.svelte';
-  import { v4 as uuid } from 'uuid';
+  import { createEventDispatcher } from 'svelte';
 
   export let todos = [];
 
   let inputText = '';
 
+  const dispatch = createEventDispatcher();
+
   const handleAddTodo = () => {
-    if (!inputText) return;
-
-    todos = [...todos, { id: uuid(), title: inputText, completed: false }];
-
+    dispatch('addTodo', { value: inputText });
     inputText = '';
   };
 </script>
@@ -34,11 +33,8 @@
     <input type="text" bind:value={inputText} />
     <Button type="submit" disabled={!inputText}>Add</Button>
   </form>
-  <Button
-    on:click={() => {
-      todos = [];
-    }}
-    disabled={todos.length === 0}>Clear list</Button
+  <Button on:click={() => dispatch('clearTodos')} disabled={todos.length === 0}
+    >Clear list</Button
   >
 </div>
 

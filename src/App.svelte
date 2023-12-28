@@ -26,6 +26,12 @@
   ];
 
   $: console.log(todos.length);
+
+  const handleAddTodo = ({ detail }) => {
+    todos = [...todos, { id: uuid(), title: detail.value, completed: false }];
+  };
+
+  const clearTodos = () => (todos = []);
 </script>
 
-<TodoList bind:todos />
+<TodoList {todos} on:addTodo={handleAddTodo} on:clearTodos={clearTodos} />
