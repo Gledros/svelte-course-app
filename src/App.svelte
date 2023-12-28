@@ -32,6 +32,14 @@
   };
 
   const clearTodos = () => (todos = []);
+
+  const removeTodo = ({ detail }) =>
+    (todos = todos.filter((item) => item.id !== detail.id));
 </script>
 
-<TodoList {todos} on:addTodo={handleAddTodo} on:clearTodos={clearTodos} />
+<TodoList
+  {todos}
+  on:addTodo={handleAddTodo}
+  on:clearTodos={clearTodos}
+  on:removeTodo={removeTodo}
+/>

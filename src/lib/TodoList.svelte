@@ -17,6 +17,8 @@
 
     if (dispatched) inputText = '';
   };
+
+  const handleRemoveTodo = (id) => dispatch('removeTodo', { id: id });
 </script>
 
 <div class="todo-list-wrapper">
@@ -30,7 +32,7 @@
             <input type="checkbox" checked={completed} />
             {title}
           </label>
-          <Button>Remove</Button>
+          <Button on:click={() => handleRemoveTodo(id)}>Remove</Button>
         </li>
       {/each}
     </ul>
