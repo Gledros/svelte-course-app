@@ -4,6 +4,11 @@
 
   export let todos = [];
 
+  /* read-only props use 'const' and doesn't necessarily be functions */
+  export const clearInput = () => (inputText = '');
+  export const focusInput = () => input.focus();
+
+  let input;
   let inputText = '';
 
   const dispatch = createEventDispatcher();
@@ -53,7 +58,7 @@
     action=""
     on:submit|preventDefault={handleAddTodo}
   >
-    <input type="text" bind:value={inputText} />
+    <input bind:this={input} type="text" bind:value={inputText} />
     <Button type="submit" disabled={!inputText}>Add</Button>
   </form>
   <Button on:click={() => dispatch('clearTodos')} disabled={todos.length === 0}

@@ -4,6 +4,8 @@
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
 
+  let todoList;
+
   let todos = [
     {
       id: uuid(),
@@ -29,6 +31,9 @@
       ...todos,
       { id: uuid(), title: event.detail.value, completed: false },
     ];
+
+    todoList.clearInput();
+    todoList.focusInput();
   };
 
   const clearTodos = () => (todos = []);
@@ -50,6 +55,7 @@
 
 <TodoList
   {todos}
+  bind:this={todoList}
   on:addTodo={handleAddTodo}
   on:clearTodos={clearTodos}
   on:removeTodo={removeTodo}
