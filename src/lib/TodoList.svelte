@@ -2,7 +2,7 @@
   import Button from './Button.svelte';
   import { v4 as uuid } from 'uuid';
 
-  export let todos;
+  export let todos = [];
 
   let inputText = '';
 
@@ -16,11 +16,15 @@
 </script>
 
 <div class="todo-list-wrapper">
-  <ul>
-    {#each todos as { id, title }, index (id)}
-      <li>{index + 1} > {title}</li>
-    {/each}
-  </ul>
+  {#if todos.length === 0}
+    <p>This list looks empty</p>
+  {:else}
+    <ul>
+      {#each todos as { id, title }, index (id)}
+        <li>{index + 1} > {title}</li>
+      {/each}
+    </ul>
+  {/if}
 
   <form
     class="add-todo-form"
@@ -30,6 +34,12 @@
     <input type="text" bind:value={inputText} />
     <Button type="submit" disabled={!inputText}>Add</Button>
   </form>
+  <Button
+    on:click={() => {
+      todos = [];
+    }}
+    disabled={todos.length === 0}>Clear list</Button
+  >
 </div>
 
 <style>
