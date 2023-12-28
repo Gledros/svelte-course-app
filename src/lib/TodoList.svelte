@@ -9,8 +9,13 @@
   const dispatch = createEventDispatcher();
 
   const handleAddTodo = () => {
-    dispatch('addTodo', { value: inputText });
-    inputText = '';
+    const dispatched = dispatch(
+      'addTodo',
+      { value: inputText },
+      { cancelable: true },
+    );
+
+    if (dispatched) inputText = '';
   };
 </script>
 

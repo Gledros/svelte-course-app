@@ -27,8 +27,12 @@
 
   $: console.log(todos.length);
 
-  const handleAddTodo = ({ detail }) => {
-    todos = [...todos, { id: uuid(), title: detail.value, completed: false }];
+  const handleAddTodo = (event) => {
+    event.preventDefault();
+    todos = [
+      ...todos,
+      { id: uuid(), title: event.detail.value, completed: false },
+    ];
   };
 
   const clearTodos = () => (todos = []);
