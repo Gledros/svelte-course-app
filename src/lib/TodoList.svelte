@@ -24,8 +24,14 @@
     <p>This list looks empty</p>
   {:else}
     <ul>
-      {#each todos as { id, title }, index (id)}
-        <li>{index + 1} > {title}</li>
+      {#each todos as { id, title, completed } (id)}
+        <li>
+          <label for={title}>
+            <input type="checkbox" checked={completed} />
+            {title}
+          </label>
+          <Button>Remove</Button>
+        </li>
       {/each}
     </ul>
   {/if}
@@ -69,5 +75,13 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
   }
 </style>

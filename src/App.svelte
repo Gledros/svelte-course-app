@@ -13,17 +13,12 @@
     {
       id: uuid(),
       title: 'Todo 2',
-      completed: false,
+      completed: true,
     },
     {
       id: uuid(),
       title: 'Todo 3',
-      completed: false,
-    },
-    {
-      id: uuid(),
-      title: 'Todo 4',
-      completed: false,
+      completed: true,
     },
   ];
 
