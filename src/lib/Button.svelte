@@ -27,7 +27,13 @@
       <slot name="leftContent" {isLeftHovered} />
     </div>
   {/if}
-  <slot>Hey, listen!</slot>
+  {#if $$slots.icon}
+    <span class="icon-{size}">
+      <slot name="icon" />
+    </span>
+  {:else}
+    <slot><p class="missing">Missing text</p></slot>
+  {/if}
 </button>
 
 <style lang="scss">
@@ -48,6 +54,7 @@
     .left-content {
       margin-right: 0.5rem;
       height: 1.5rem;
+      width: 1.5rem;
     }
 
     &:disabled {
@@ -73,5 +80,24 @@
       background-color: variables.$color_secondary;
       color: black;
     }
+
+    .icon-normal {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .icon-small {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .icon-big {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  p.missing {
+    color: rgb(0, 0, 0);
   }
 </style>

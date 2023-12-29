@@ -1,6 +1,7 @@
 <script>
   import Button from './Button.svelte';
   import { createEventDispatcher, afterUpdate } from 'svelte';
+  import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
 
   afterUpdate(() => {
     if (autoscroll) listUl.scrollTo(0, listHeight);
@@ -45,7 +46,7 @@
     <div class="todo-list" bind:this={listUl}>
       <ul bind:offsetHeight={listHeight}>
         {#each todos as { id, title, completed } (id)}
-          <li>
+          <li class:completed>
             <label for={id}>
               <input
                 {id}
@@ -61,7 +62,14 @@
               />
               {title}
             </label>
-            <Button on:click={() => handleRemoveTodo(id)}>Remove</Button>
+            <Button
+              aria-label="Remove Todo: {title}"
+              title="Remove Todo"
+              on:click={() => handleRemoveTodo(id)}
+              size="small"
+            >
+              <FaRegTrashAlt slot="icon" />
+            </Button>
           </li>
         {/each}
       </ul>
@@ -74,6 +82,7 @@
     on:submit|preventDefault={handleAddTodo}
   >
     <input
+      placeholder="New Todo"
       name="todo-item"
       bind:this={input}
       type="text"
@@ -119,11 +128,10 @@
 
   ul {
     list-style: none;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
   }
 
   .todo-list::-webkit-scrollbar {
@@ -146,8 +154,16 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    padding: 0.5rem 0;
+    padding: 0.5rem 0.5rem;
     border-bottom: 1px solid #767676;
+  }
+
+  .completed {
+    background-color: rgb(222, 222, 222);
+  }
+
+  .completed label {
+    text-decoration: line-through;
   }
 
   li:last-of-type {
