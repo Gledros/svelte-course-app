@@ -27,15 +27,11 @@
     },
   ];
 
-  const handleAddTodo = async (event) => {
-    event.preventDefault();
-    console.log(document.querySelectorAll('.todo-list ul li'));
+  const handleAddTodo = (event) => {
     todos = [
       ...todos,
       { id: uuid(), title: event.detail.value, completed: false },
     ];
-    await tick();
-    console.log(document.querySelectorAll('.todo-list ul li'));
 
     todoList.clearInput();
     todoList.focusInput();

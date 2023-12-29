@@ -1,15 +1,9 @@
 <script>
   import Button from './Button.svelte';
-  import {
-    createEventDispatcher,
-    onDestroy,
-    onMount,
-    beforeUpdate,
-    afterUpdate,
-  } from 'svelte';
+  import { createEventDispatcher, afterUpdate } from 'svelte';
 
   afterUpdate(() => {
-    if (autoscroll) listUl.scrollTo(0, listHeight); //listUl.scrollHeight);
+    if (autoscroll) listUl.scrollTo(0, listHeight);
     autoscroll = false;
   });
 
@@ -44,6 +38,7 @@
 </script>
 
 <div class="todo-list-wrapper">
+  <h4>Todo List</h4>
   {#if todos.length === 0}
     <p>This list looks empty</p>
   {:else}
@@ -97,6 +92,9 @@
     flex-direction: column;
     align-content: center;
     gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #767676;
+    border-radius: 2px;
   }
 
   .todo-list {
@@ -145,8 +143,29 @@
 
   li {
     display: flex;
-
+    align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #767676;
+  }
+
+  li:last-of-type {
+    padding-top: 0.5rem;
+    border-bottom: 0;
+  }
+
+  label {
+    display: flex;
+    gap: 0.5rem;
+    text-align: left;
+    align-items: center;
+  }
+
+  h4 {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #767676;
   }
 </style>
