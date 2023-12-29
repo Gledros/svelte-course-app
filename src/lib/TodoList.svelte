@@ -9,7 +9,7 @@
   } from 'svelte';
 
   afterUpdate(() => {
-    if (autoscroll) listUl.scrollTo(0, listUl.scrollHeight);
+    if (autoscroll) listUl.scrollTo(0, listHeight); //listUl.scrollHeight);
     autoscroll = false;
   });
 
@@ -18,7 +18,7 @@
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
 
-  let input, listUl;
+  let input, listUl, listHeight;
   let inputText = '';
   let autoscroll = false;
   let previousTodos = todos;
@@ -47,28 +47,30 @@
   {#if todos.length === 0}
     <p>This list looks empty</p>
   {:else}
-    <ul class="todo-list" bind:this={listUl}>
-      {#each todos as { id, title, completed } (id)}
-        <li>
-          <label for={id}>
-            <input
-              {id}
-              on:input={(event) => {
-                event.currentTarget.checked = completed;
-                dispatch('toggleTodo', {
-                  id: id,
-                  completed: !completed,
-                });
-              }}
-              type="checkbox"
-              checked={completed}
-            />
-            {title}
-          </label>
-          <Button on:click={() => handleRemoveTodo(id)}>Remove</Button>
-        </li>
-      {/each}
-    </ul>
+    <div class="todo-list" bind:this={listUl}>
+      <ul bind:offsetHeight={listHeight}>
+        {#each todos as { id, title, completed } (id)}
+          <li>
+            <label for={id}>
+              <input
+                {id}
+                on:input={(event) => {
+                  event.currentTarget.checked = completed;
+                  dispatch('toggleTodo', {
+                    id: id,
+                    completed: !completed,
+                  });
+                }}
+                type="checkbox"
+                checked={completed}
+              />
+              {title}
+            </label>
+            <Button on:click={() => handleRemoveTodo(id)}>Remove</Button>
+          </li>
+        {/each}
+      </ul>
+    </div>
   {/if}
 
   <form
@@ -97,6 +99,12 @@
     gap: 1rem;
   }
 
+  .todo-list {
+    max-height: 15rem;
+    max-width: 20rem;
+    overflow: auto;
+  }
+
   form {
     display: flex;
     flex-direction: column;
@@ -118,21 +126,18 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    max-height: 15rem;
-    max-width: 20rem;
-    overflow: auto;
   }
 
-  ul::-webkit-scrollbar {
+  .todo-list::-webkit-scrollbar {
     width: 0.75rem; /* width of the entire scrollbar */
   }
 
-  ul::-webkit-scrollbar-track {
+  .todo-list::-webkit-scrollbar-track {
     background: rgb(225, 225, 225); /* color of the tracking area */
     border-radius: 0.4rem;
   }
 
-  ul::-webkit-scrollbar-thumb {
+  .todo-list::-webkit-scrollbar-thumb {
     background-color: var(--buttonBgColor); /* color of the scroll thumb */
     border-radius: 0.4rem; /* roundness of the scroll thumb */
     border: 3px solid var(--buttonBgColor); /*rgb(122, 121, 117); /* creates padding around scroll thumb */
