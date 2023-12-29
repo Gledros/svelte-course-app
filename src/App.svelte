@@ -4,6 +4,7 @@
   import Button from './lib/Button.svelte';
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
+  import { tick } from 'svelte';
 
   let todoList;
   let displayList = true;
@@ -26,11 +27,15 @@
     },
   ];
 
-  const handleAddTodo = (event) => {
+  const handleAddTodo = async (event) => {
+    event.preventDefault();
+    console.log(document.querySelectorAll('.todo-list ul li'));
     todos = [
       ...todos,
       { id: uuid(), title: event.detail.value, completed: false },
     ];
+    await tick();
+    console.log(document.querySelectorAll('.todo-list ul li'));
 
     todoList.clearInput();
     todoList.focusInput();
