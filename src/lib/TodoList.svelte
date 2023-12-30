@@ -95,12 +95,12 @@
   >
 </div>
 
-<style>
+<style lang="scss">
   .todo-list-wrapper {
     display: flex;
     flex-direction: column;
     align-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     padding: 1rem;
     border: 1px solid #767676;
     border-radius: 2px;
@@ -114,39 +114,52 @@
 
   form {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 0.5rem;
     padding: 1rem;
     border: 1px solid #767676;
     border-radius: 2px;
+
+    input {
+      text-align: center;
+      padding: 0.5rem;
+      color: #ffffff;
+      font-weight: bold;
+      background-color: #b9b9b9;
+      border: 1px solid #767676;
+      border-radius: 2px;
+    }
+
+    ::placeholder {
+      color: rgb(255, 255, 255);
+    }
   }
 
-  input {
-    text-align: center;
-    padding: 0.5rem;
+  input[type='checkbox'] {
+    cursor: pointer;
   }
 
   ul {
     list-style: none;
-    padding: 0.5rem;
+    padding: 0 0.5rem;
     margin: 0;
     display: flex;
     flex-direction: column;
   }
 
   .todo-list::-webkit-scrollbar {
-    width: 0.75rem; /* width of the entire scrollbar */
+    width: 0.75rem;
   }
 
   .todo-list::-webkit-scrollbar-track {
-    background: rgb(225, 225, 225); /* color of the tracking area */
+    background: rgb(225, 225, 225);
     border-radius: 0.4rem;
   }
 
   .todo-list::-webkit-scrollbar-thumb {
-    background-color: var(--buttonBgColor); /* color of the scroll thumb */
-    border-radius: 0.4rem; /* roundness of the scroll thumb */
-    border: 3px solid var(--buttonBgColor); /*rgb(122, 121, 117); /* creates padding around scroll thumb */
+    background-color: var(--buttonBgColor);
+    border-radius: 0.4rem;
+    border: 3px solid var(--buttonBgColor);
   }
 
   li {
@@ -158,6 +171,10 @@
     border-bottom: 1px solid #767676;
   }
 
+  li:first-of-type {
+    border-top: 1px solid #767676;
+  }
+
   .completed {
     background-color: rgb(222, 222, 222);
   }
@@ -166,16 +183,13 @@
     text-decoration: line-through;
   }
 
-  li:last-of-type {
-    padding-top: 0.5rem;
-    border-bottom: 0;
-  }
-
   label {
     display: flex;
     gap: 0.5rem;
     text-align: left;
-    align-items: center;
+    align-items: baseline;
+    cursor: pointer;
+    user-select: none;
   }
 
   h4 {
