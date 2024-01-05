@@ -17,8 +17,7 @@
   let error = null;
   let isLoading = false;
   let isAdding = false;
-  let todosBeingDeleted = [];
-  let todosBeingToggled = [];
+  let disabledTodos = [];
 
   const loadTodos = () => {
     isLoading = true;
@@ -63,9 +62,9 @@
   const removeTodo = async ({ detail }) => {
     const id = detail.id;
 
-    if (todosBeingDeleted.includes(id)) return;
+    if (disabledTodos.includes(id)) return;
 
-    todosBeingDeleted = [...todosBeingDeleted, id];
+    disabledTodos = [...disabledTodos, id];
 
     await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
       method: 'DELETE',
@@ -75,7 +74,7 @@
       } else error = 'An error has ocurred';
     });
 
-    todosBeingDeleted = todosBeingDeleted.filter((todo) => {
+    disabledTodos = disabledTodos.filter((todo) => {
       if (todo !== id) return todo;
     });
   };
@@ -83,9 +82,9 @@
   const toggleTodo = async ({ detail }) => {
     const id = detail.id;
 
-    if (todosBeingToggled.includes(id)) return;
+    if (disabledTodos.includes(id)) return;
 
-    todosBeingToggled = [...todosBeingToggled, id];
+    disabledTodos = [...disabledTodos, id];
 
     await fetch(`https://jsonplaceholder.typicode.com/todos/${detail.id}`, {
       method: 'PATCH',
@@ -106,7 +105,7 @@
       } else error = 'An error has ocurred';
     });
 
-    todosBeingToggled = todosBeingDeleted.filter((todo) => {
+    disabledTodos = disabledTodos.filter((todo) => {
       if (todo !== id) return todo;
     });
   };
@@ -119,8 +118,7 @@
       {error}
       {isLoading}
       {isAdding}
-      {todosBeingDeleted}
-      {todosBeingToggled}
+      {disabledTodos}
       bind:this={todoList}
       on:addTodo={handleAddTodo}
       on:clearTodos={clearTodos}

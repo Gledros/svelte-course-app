@@ -48,8 +48,8 @@
     padding: 0.5rem 1.5rem;
 
     transition:
-      background-color 1.5s ease,
-      color 0.5s ease;
+      background-color 0.25s ease,
+      color 0.25s ease;
 
     .left-content {
       margin-right: 0.5rem;
