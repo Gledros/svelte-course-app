@@ -13,6 +13,7 @@
   export let error = null;
   export let isLoading = null;
   export let isAdding = null;
+  export let todosBeingDeleted = null;
 
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
@@ -58,6 +59,7 @@
             <label for={id}>
               <input
                 {id}
+                disabled={todosBeingDeleted.includes(id)}
                 on:input={(event) => {
                   event.currentTarget.checked = completed;
                   dispatch('toggleTodo', {
@@ -71,6 +73,7 @@
               {title}
             </label>
             <Button
+              disabled={todosBeingDeleted.includes(id)}
               aria-label="Remove Todo: {title}"
               title="Remove Todo"
               on:click={() => handleRemoveTodo(id)}

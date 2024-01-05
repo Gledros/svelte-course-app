@@ -17,6 +17,7 @@
   let error = null;
   let isLoading = false;
   let isAdding = false;
+  let todosBeingDeleted = [];
 
   const loadTodos = () => {
     isLoading = true;
@@ -52,14 +53,31 @@
     isAdding = false;
 
     await tick;
-    //todoList.clearInput();
+    todoList.clearInput();
     todoList.focusInput();
   };
 
   const clearTodos = () => (todos = []);
 
-  const removeTodo = ({ detail }) =>
-    (todos = todos.filter((todo) => todo.id !== detail.id));
+  const removeTodo = async ({ detail }) => {
+    const id = detail.id;
+
+    if (todosBeingDeleted.includes(id)) return;
+
+    todosBeingDeleted = [...todosBeingDeleted, id];
+
+    await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: 'DELETE',
+    }).then(async (response) => {
+      if (response.ok) {
+        todos = todos.filter((todo) => todo.id !== id);
+      } else error = 'An error has ocurred';
+    });
+
+    todosBeingDeleted = todosBeingDeleted.filter((todo) => {
+      if (todo !== id) return todo;
+    });
+  };
 
   const toggleTodo = (event) => {
     todos = todos.map((todo) => {
@@ -80,6 +98,7 @@
       {error}
       {isLoading}
       {isAdding}
+      {todosBeingDeleted}
       bind:this={todoList}
       on:addTodo={handleAddTodo}
       on:clearTodos={clearTodos}
