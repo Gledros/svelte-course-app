@@ -1,6 +1,7 @@
 <script>
   import Button from './Button.svelte';
   import { createEventDispatcher, afterUpdate } from 'svelte';
+  // @ts-ignore
   import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
 
   afterUpdate(() => {
@@ -11,6 +12,7 @@
   export let todos = null;
   export let error = null;
   export let isLoading = null;
+  export let isAdding = null;
 
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
@@ -88,13 +90,14 @@
     on:submit|preventDefault={handleAddTodo}
   >
     <input
+      disabled={isAdding}
       placeholder="New Todo"
       name="todo-item"
       bind:this={input}
       type="text"
       bind:value={inputText}
     />
-    <Button type="submit" disabled={!inputText}>Add</Button>
+    <Button type="submit" disabled={!inputText || isAdding}>Add</Button>
   </form>
   <Button on:click={() => dispatch('clearTodos')} disabled={todos?.length === 0}
     >Clear list</Button
@@ -134,6 +137,10 @@
       background-color: #b9b9b9;
       border: 1px solid #767676;
       border-radius: 2px;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
     }
 
     ::placeholder {

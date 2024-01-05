@@ -1,7 +1,7 @@
 <svelte:options immutable={true} />
 
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import Button from './lib/Button.svelte';
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
@@ -16,6 +16,7 @@
   let todos = null;
   let error = null;
   let isLoading = false;
+  let isAdding = false;
 
   const loadTodos = () => {
     isLoading = true;
@@ -30,13 +31,28 @@
     isLoading = false;
   };
 
-  const handleAddTodo = (event) => {
-    todos = [
-      ...todos,
-      { id: uuid(), title: event.detail.value, completed: false },
-    ];
+  const handleAddTodo = async (event) => {
+    event.preventDefault();
+    isAdding = true;
 
-    todoList.clearInput();
+    await fetch('https://jsonplaceholder.typicode.com/todos', {
+      method: 'POST',
+      body: JSON.stringify({ title: event.detail.value, completed: false }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        const todo = await response.json();
+
+        todos = [...todos, { ...todo, id: uuid() }];
+      } else error = 'An error has ocurred';
+    });
+
+    isAdding = false;
+
+    await tick;
+    //todoList.clearInput();
     todoList.focusInput();
   };
 
@@ -63,6 +79,7 @@
       {todos}
       {error}
       {isLoading}
+      {isAdding}
       bind:this={todoList}
       on:addTodo={handleAddTodo}
       on:clearTodos={clearTodos}
