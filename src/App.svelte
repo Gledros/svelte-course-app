@@ -18,6 +18,7 @@
   let isLoading = false;
   let isAdding = false;
   let todosBeingDeleted = [];
+  let todosBeingToggled = [];
 
   const loadTodos = () => {
     isLoading = true;
@@ -79,14 +80,34 @@
     });
   };
 
-  const toggleTodo = (event) => {
-    todos = todos.map((todo) => {
-      if (todo.id === event.detail.id)
-        return {
-          ...todo,
-          completed: event.detail.completed,
-        };
-      return todo;
+  const toggleTodo = async ({ detail }) => {
+    const id = detail.id;
+
+    if (todosBeingToggled.includes(id)) return;
+
+    todosBeingToggled = [...todosBeingToggled, id];
+
+    await fetch(`https://jsonplaceholder.typicode.com/todos/${detail.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ completed: detail.completed }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        todos = todos.map((todo) => {
+          if (todo.id === detail.id)
+            return {
+              ...todo,
+              completed: detail.completed,
+            };
+          return todo;
+        });
+      } else error = 'An error has ocurred';
+    });
+
+    todosBeingToggled = todosBeingDeleted.filter((todo) => {
+      if (todo !== id) return todo;
     });
   };
 </script>
@@ -99,6 +120,7 @@
       {isLoading}
       {isAdding}
       {todosBeingDeleted}
+      {todosBeingToggled}
       bind:this={todoList}
       on:addTodo={handleAddTodo}
       on:clearTodos={clearTodos}

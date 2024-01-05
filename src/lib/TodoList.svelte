@@ -14,6 +14,7 @@
   export let isLoading = null;
   export let isAdding = null;
   export let todosBeingDeleted = null;
+  export let todosBeingToggled = null;
 
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
@@ -59,7 +60,8 @@
             <label for={id}>
               <input
                 {id}
-                disabled={todosBeingDeleted.includes(id)}
+                disabled={todosBeingDeleted.includes(id) ||
+                  todosBeingToggled.includes(id)}
                 on:input={(event) => {
                   event.currentTarget.checked = completed;
                   dispatch('toggleTodo', {
