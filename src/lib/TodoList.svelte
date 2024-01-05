@@ -8,7 +8,9 @@
     autoscroll = false;
   });
 
-  export let todos = [];
+  export let todos = null;
+  export let error = null;
+  export let isLoading = null;
 
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();
@@ -19,7 +21,7 @@
   let previousTodos = todos;
 
   $: {
-    autoscroll = todos.length > previousTodos.length;
+    autoscroll = todos?.length > previousTodos?.length;
     previousTodos = todos;
   }
 
@@ -40,9 +42,13 @@
 
 <div class="todo-list-wrapper">
   <h4>Todo List</h4>
-  {#if todos.length === 0}
+  {#if isLoading}
+    <p>Loading list...</p>
+  {:else if error}
+    <p>{error}</p>
+  {:else if todos?.length === 0 || !todos}
     <p>This list looks empty</p>
-  {:else}
+  {:else if todos}
     <div class="todo-list" bind:this={listUl}>
       <ul bind:offsetHeight={listHeight}>
         {#each todos as { id, title, completed } (id)}
@@ -90,7 +96,7 @@
     />
     <Button type="submit" disabled={!inputText}>Add</Button>
   </form>
-  <Button on:click={() => dispatch('clearTodos')} disabled={todos.length === 0}
+  <Button on:click={() => dispatch('clearTodos')} disabled={todos?.length === 0}
     >Clear list</Button
   >
 </div>
