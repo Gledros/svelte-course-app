@@ -5,6 +5,7 @@
   import Button from './lib/Button.svelte';
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
+  import { fly } from 'svelte/transition';
 
   onMount(() => {
     loadTodos();
@@ -113,25 +114,20 @@
 
 <div>
   {#if displayList}
-    <TodoList
-      {todos}
-      {error}
-      {isLoading}
-      {isAdding}
-      {disabledTodos}
-      bind:this={todoList}
-      on:addTodo={handleAddTodo}
-      on:clearTodos={clearTodos}
-      on:removeTodo={removeTodo}
-      on:toggleTodo={toggleTodo}
-      let:todo
-    >
-      <!-- You can pass this way your own component for the slot but can't use the
-      custom events from inside the TodoList because they are dispatched inside
-      the slot fallback. BUT, one way is to pass the functions to the slot,
-      so you can make use of them in here -->
-      <!-- <Todo {todo} on:toggle on:remove /> -->
-    </TodoList>
+    <div transition:fly={{ y: -150 }}>
+      <TodoList
+        {todos}
+        {error}
+        {isLoading}
+        {isAdding}
+        {disabledTodos}
+        bind:this={todoList}
+        on:addTodo={handleAddTodo}
+        on:clearTodos={clearTodos}
+        on:removeTodo={removeTodo}
+        on:toggleTodo={toggleTodo}
+      />
+    </div>
   {/if}
 
   <Button on:click={() => (displayList = !displayList)}>
