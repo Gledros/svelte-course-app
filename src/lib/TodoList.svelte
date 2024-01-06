@@ -54,33 +54,38 @@
   {:else if todos}
     <div class="todo-list" bind:this={listUl}>
       <ul bind:offsetHeight={listHeight}>
-        {#each todos as { id, title, completed } (id)}
-          <li class:completed>
-            <label for={id}>
-              <input
-                {id}
-                disabled={disabledTodos.includes(id)}
-                on:input={(event) => {
-                  event.currentTarget.checked = completed;
-                  dispatch('toggleTodo', {
-                    id: id,
-                    completed: !completed,
-                  });
-                }}
-                type="checkbox"
-                checked={completed}
-              />
-              {title}
-            </label>
-            <Button
-              disabled={disabledTodos.includes(id)}
-              aria-label="Remove Todo: {title}"
-              title="Remove Todo"
-              on:click={() => handleRemoveTodo(id)}
-              size="small"
-            >
-              <FaRegTrashAlt slot="icon" />
-            </Button>
+        {#each todos as todo (todo.id)}
+          {@const { id, completed, title } = todo}
+          <li>
+            <slot {todo}>
+              <div class:completed>
+                <label for={id}>
+                  <input
+                    {id}
+                    disabled={disabledTodos.includes(id)}
+                    on:input={(event) => {
+                      event.currentTarget.checked = completed;
+                      dispatch('toggleTodo', {
+                        id: id,
+                        completed: !completed,
+                      });
+                    }}
+                    type="checkbox"
+                    checked={completed}
+                  />
+                  {title}
+                </label>
+                <Button
+                  disabled={disabledTodos.includes(id)}
+                  aria-label="Remove Todo: {title}"
+                  title="Remove Todo"
+                  on:click={() => handleRemoveTodo(id)}
+                  size="small"
+                >
+                  <FaRegTrashAlt slot="icon" />
+                </Button>
+              </div>
+            </slot>
           </li>
         {/each}
       </ul>
@@ -178,17 +183,17 @@
     border: 3px solid var(--buttonBgColor);
   }
 
-  li {
+  li > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
     padding: 0.5rem 0.5rem;
     border-bottom: 1px solid #767676;
-  }
 
-  li:first-of-type {
-    border-top: 1px solid #767676;
+    &:first-of-type {
+      border-top: 1px solid #767676;
+    }
   }
 
   .completed {

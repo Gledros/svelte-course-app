@@ -124,7 +124,14 @@
       on:clearTodos={clearTodos}
       on:removeTodo={removeTodo}
       on:toggleTodo={toggleTodo}
-    />
+      let:todo
+    >
+      <!-- You can pass this way your own component for the slot but can't use the
+      custom events from inside the TodoList because they are dispatched inside
+      the slot fallback. BUT, one way is to pass the functions to the slot,
+      so you can make use of them in here -->
+      <!-- <Todo {todo} on:toggle on:remove /> -->
+    </TodoList>
   {/if}
 
   <Button on:click={() => (displayList = !displayList)}>
