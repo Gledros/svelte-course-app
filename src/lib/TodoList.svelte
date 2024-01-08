@@ -3,6 +3,7 @@
   import { createEventDispatcher, afterUpdate } from 'svelte';
   // @ts-ignore
   import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
+  import { fly } from 'svelte/transition';
 
   afterUpdate(() => {
     if (autoscroll) listUl.scrollTo(0, listHeight);
@@ -58,7 +59,11 @@
           {@const { id, completed, title } = todo}
           <li>
             <slot {todo}>
-              <div class:completed>
+              <div
+                class:completed
+                in:fly={{ x: -200, duration: 750 }}
+                out:fly={{ x: 200, duration: 750 }}
+              >
                 <label for={id}>
                   <input
                     {id}
@@ -126,7 +131,8 @@
   .todo-list {
     max-height: 15rem;
     max-width: 20rem;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   form {
@@ -189,11 +195,12 @@
     justify-content: space-between;
     gap: 0.5rem;
     padding: 0.5rem 0.5rem;
+    // width: 100%;
     border-bottom: 1px solid #767676;
+  }
 
-    &:first-of-type {
-      border-top: 1px solid #767676;
-    }
+  li:first-of-type {
+    border-top: 1px solid #767676;
   }
 
   .completed {
