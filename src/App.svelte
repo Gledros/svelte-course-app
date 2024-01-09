@@ -6,6 +6,7 @@
   import TodoList from './lib/TodoList.svelte';
   import { v4 as uuid } from 'uuid';
   import { fly } from 'svelte/transition';
+  import spin from './lib/transitions/spin';
 
   onMount(() => {
     loadTodos();
@@ -114,7 +115,11 @@
 
 <div>
   {#if displayList}
-    <div transition:fly={{ y: -150 }}>
+    <!-- <div transition:fly={{ y: -150 }}> -->
+    <div
+      transition:spin={{ duration: 1500, spin: 2 }}
+      style="opacity:0.5; transform: rotate(90deg)"
+    >
       <TodoList
         {todos}
         {error}
