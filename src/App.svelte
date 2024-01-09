@@ -7,6 +7,7 @@
   import { v4 as uuid } from 'uuid';
   import { fly } from 'svelte/transition';
   import spin from './lib/transitions/spin';
+  import fade from './lib/transitions/fade';
 
   onMount(() => {
     loadTodos();
@@ -116,10 +117,11 @@
 <div>
   {#if displayList}
     <!-- <div transition:fly={{ y: -150 }}> -->
-    <div
+    <!-- <div
       transition:spin={{ duration: 1500, spin: 2 }}
       style="opacity:0.5; transform: rotate(90deg)"
-    >
+    > -->
+    <div transition:fade={{ duration: 1500 }}>
       <TodoList
         {todos}
         {error}
