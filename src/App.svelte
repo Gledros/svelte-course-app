@@ -47,7 +47,7 @@
       if (response.ok) {
         const todo = await response.json();
 
-        todos = [...todos, { ...todo, id: uuid() }];
+        todos = [{ ...todo, id: uuid() }, ...todos];
       } else error = 'An error has ocurred';
     });
 
