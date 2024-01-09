@@ -3,6 +3,7 @@
   import { createEventDispatcher, afterUpdate } from 'svelte';
   // @ts-ignore
   import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
+  import { flip } from 'svelte/animate';
   import { fly } from 'svelte/transition';
 
   afterUpdate(() => {
@@ -47,17 +48,23 @@
 <div class="todo-list-wrapper">
   <h4>Todo List</h4>
   {#if isLoading}
-    <p>Loading list...</p>
+    <div class="todo-list">
+      <p>Loading list...</p>
+    </div>
   {:else if error}
-    <p>{error}</p>
+    <div class="todo-list">
+      <p>{error}</p>
+    </div>
   {:else if todos?.length === 0 || !todos}
-    <p>This list looks empty</p>
+    <div class="todo-list">
+      <p>This list looks empty</p>
+    </div>
   {:else if todos}
     <div class="todo-list" bind:this={listUl}>
       <ul bind:offsetHeight={listHeight}>
         {#each todos as todo (todo.id)}
           {@const { id, completed, title } = todo}
-          <li>
+          <li animate:flip={{ delay: 300, duration: 300 }}>
             <slot {todo}>
               <div
                 class:completed
@@ -97,11 +104,7 @@
     </div>
   {/if}
 
-  <form
-    class="add-todo-form"
-    action=""
-    on:submit|preventDefault={handleAddTodo}
-  >
+  <form on:submit|preventDefault={handleAddTodo}>
     <input
       disabled={isAdding}
       placeholder="New Todo"
@@ -122,26 +125,33 @@
     display: flex;
     flex-direction: column;
     align-content: center;
+    align-items: center;
     gap: 0.5rem;
     padding: 1rem;
     border: 1px solid #767676;
     border-radius: 2px;
+    min-width: 20rem;
+    max-width: 24rem;
+    height: 26rem;
   }
 
   .todo-list {
-    max-height: 15rem;
-    max-width: 20rem;
+    flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    border-bottom: 1px solid #767676;
+    padding-bottom: 0.5rem;
+    width: 100%;
   }
 
   form {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     gap: 0.5rem;
-    padding: 1rem;
+    padding: 0.5rem;
     border: 1px solid #767676;
     border-radius: 2px;
+    // width: 100%;
 
     input {
       text-align: center;
@@ -181,6 +191,7 @@
   .todo-list::-webkit-scrollbar-track {
     background: rgb(225, 225, 225);
     border-radius: 0.4rem;
+    margin-bottom: 0.5rem;
   }
 
   .todo-list::-webkit-scrollbar-thumb {
@@ -195,7 +206,6 @@
     justify-content: space-between;
     gap: 0.5rem;
     padding: 0.5rem 0.5rem;
-    // width: 100%;
     border-bottom: 1px solid #767676;
   }
 
@@ -225,5 +235,6 @@
     padding: 0;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #767676;
+    width: 100%;
   }
 </style>
