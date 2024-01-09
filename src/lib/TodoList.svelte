@@ -145,19 +145,18 @@
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    border-top: 1px solid #767676;
     border-bottom: 1px solid #767676;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0;
     width: 100%;
   }
 
   form {
     display: flex;
-    // justify-content: space-between;
     gap: 0.5rem;
     padding: 0.5rem;
     border: 1px solid #767676;
     border-radius: 2px;
-    // width: 100%;
 
     input {
       text-align: center;
@@ -197,6 +196,7 @@
   .todo-list::-webkit-scrollbar-track {
     background: rgb(225, 225, 225);
     border-radius: 0.4rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
 
@@ -240,7 +240,6 @@
     margin: 0;
     padding: 0;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #767676;
     width: 100%;
   }
 </style>
