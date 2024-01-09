@@ -7,8 +7,13 @@
   import { fly } from 'svelte/transition';
 
   afterUpdate(() => {
-    if (autoscroll) listUl.scrollTo({ top: 0, behavior: 'smooth' });
-    autoscroll = false;
+    if (scrollOnAdd) {
+      const direction = scrollOnAdd === 'top' ? 0 : listHeight;
+
+      if (autoscroll) listUl.scrollTo({ top: direction, behavior: 'smooth' });
+
+      autoscroll = false;
+    }
   });
 
   export let todos = null;
@@ -16,6 +21,7 @@
   export let isLoading = null;
   export let isAdding = null;
   export let disabledTodos = null;
+  export let scrollOnAdd = undefined;
 
   export const clearInput = () => (inputText = '');
   export const focusInput = () => input.focus();

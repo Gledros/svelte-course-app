@@ -121,6 +121,7 @@
         {isLoading}
         {isAdding}
         {disabledTodos}
+        scrollOnAdd="top"
         bind:this={todoList}
         on:addTodo={handleAddTodo}
         on:clearTodos={clearTodos}
