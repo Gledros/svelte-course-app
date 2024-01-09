@@ -7,7 +7,7 @@
   import { fly } from 'svelte/transition';
 
   afterUpdate(() => {
-    if (autoscroll) listUl.scrollTo(0, listHeight);
+    if (autoscroll) listUl.scrollTo({ top: listHeight, behavior: 'smooth' });
     autoscroll = false;
   });
 
