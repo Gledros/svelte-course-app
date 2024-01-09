@@ -1,0 +1,19 @@
+import { cubicInOut } from 'svelte/easing';
+
+export const fade = (
+  node,
+  { delay = 0, duration = 500, easing = cubicInOut },
+) => {
+  const originalOpacity = +getComputedStyle(node).opacity;
+
+  return {
+    delay,
+    duration,
+    easing,
+    tick: (t) => {
+      node.style.opacity = t * originalOpacity;
+    },
+  };
+};
+
+export default fade;
