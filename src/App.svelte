@@ -1,26 +1,14 @@
 <svelte:options immutable={true} />
 
 <script>
-  import { onMount } from 'svelte';
-  import tippy from 'tippy.js';
-  import 'tippy.js/dist/tippy.css';
+  import tippy from './lib/actions/tippy';
 
-  onMount(() => {
-    tippy('.tooltip', {
-      content: 'tooltip content',
-    });
-    tippy(button, {
-      content: 'text',
-    });
-  });
-
-  let button;
+  let content = 'some string';
 </script>
 
 <div>
-  <button class="tooltip"> Button </button>
-  <button class="tooltip" data-tippy-content="some other text"> Button </button>
-  <button bind:this={button}> Button </button>
+  <input type="text" bind:value={content} />
+  <button use:tippy={{ content, placement: 'right' }}> Button </button>
 </div>
 
 <style>
