@@ -1,40 +1,26 @@
 <svelte:options immutable={true} />
 
 <script>
-  import longpress from './lib/actions/longpress';
+  import { onMount } from 'svelte';
+  import tippy from 'tippy.js';
+  import 'tippy.js/dist/tippy.css';
 
-  let showButton = true;
-  let duration = 3000;
+  onMount(() => {
+    tippy('.tooltip', {
+      content: 'tooltip content',
+    });
+    tippy(button, {
+      content: 'text',
+    });
+  });
+
+  let button;
 </script>
 
 <div>
-  <label for="show">
-    <input bind:checked={showButton} id="show" type="checkbox" />
-    Toggle
-  </label>
-
-  <label for="range">
-    <input
-      type="range"
-      id="range"
-      bind:value={duration}
-      max={4000}
-      min={2000}
-      step={50}
-    />
-    {duration}ms
-  </label>
-
-  {#if showButton}
-    <button
-      use:longpress={{ duration }}
-      on:longpress={() => {
-        alert('pressed');
-      }}
-    >
-      Hold
-    </button>
-  {/if}
+  <button class="tooltip"> Button </button>
+  <button class="tooltip" data-tippy-content="some other text"> Button </button>
+  <button bind:this={button}> Button </button>
 </div>
 
 <style>
