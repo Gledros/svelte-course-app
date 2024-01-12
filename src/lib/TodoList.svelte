@@ -4,7 +4,7 @@
   // @ts-ignore
   import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
   import { flip } from 'svelte/animate';
-  import { fly } from 'svelte/transition';
+  import { fade } from 'svelte/transition';
 
   afterUpdate(() => {
     if (scrollOnAdd) {
@@ -36,6 +36,9 @@
     previousTodos = todos;
   }
 
+  $: doneList = todos?.filter((todo) => todo.completed) || [];
+  $: todoList = todos?.filter((todo) => !todo.completed) || [];
+
   const dispatch = createEventDispatcher();
 
   const handleAddTodo = () => {
@@ -52,7 +55,6 @@
 </script>
 
 <div class="todo-list-wrapper">
-  <h4>Todo List</h4>
   {#if isLoading}
     <div class="todo-list">
       <p>Loading list...</p>
@@ -66,67 +68,95 @@
       <p>This list looks empty</p>
     </div>
   {:else if todos}
-    <div class="todo-list" bind:this={listUl}>
-      <ul bind:offsetHeight={listHeight}>
-        {#each todos as todo (todo.id)}
-          {@const { id, completed, title } = todo}
-          <li animate:flip={{ delay: 300, duration: 300 }}>
-            <slot {todo}>
-              <div
-                class:completed
-                in:fly={{ x: -200, duration: 750 }}
-                out:fly={{ x: 200, duration: 750 }}
-              >
-                <label for={id}>
-                  <input
-                    {id}
-                    disabled={disabledTodos.includes(id)}
-                    on:input={(event) => {
-                      event.currentTarget.checked = completed;
-                      dispatch('toggleTodo', {
-                        id: id,
-                        completed: !completed,
-                      });
-                    }}
-                    type="checkbox"
-                    checked={completed}
-                  />
-                  {title}
-                </label>
-                <Button
-                  disabled={disabledTodos.includes(id)}
-                  aria-label="Remove Todo: {title}"
-                  title="Remove Todo"
-                  on:click={() => handleRemoveTodo(id)}
-                  size="small"
-                >
-                  <FaRegTrashAlt slot="icon" />
-                </Button>
-              </div>
-            </slot>
-          </li>
-        {/each}
-      </ul>
+    <div class="main-section">
+      {#each [todoList, doneList] as list, index}
+        <div class="list-section">
+          {#if index === 0}
+            <h4>Todo</h4>
+          {:else}
+            <h4>Done</h4>
+          {/if}
+          <div class="todo-list" bind:this={listUl}>
+            <ul bind:offsetHeight={listHeight}>
+              {#each list as todo (todo.id)}
+                {@const { id, completed, title } = todo}
+                <li animate:flip={{ delay: 300, duration: 300 }}>
+                  <slot {todo}>
+                    <div class:completed transition:fade={{ duration: 750 }}>
+                      <label for={id}>
+                        <input
+                          {id}
+                          disabled={disabledTodos.includes(id)}
+                          on:input={(event) => {
+                            event.currentTarget.checked = completed;
+                            dispatch('toggleTodo', {
+                              id: id,
+                              completed: !completed,
+                            });
+                          }}
+                          type="checkbox"
+                          checked={completed}
+                        />
+                        {title}
+                      </label>
+                      <Button
+                        disabled={disabledTodos.includes(id)}
+                        aria-label="Remove Todo: {title}"
+                        title="Remove Todo"
+                        on:click={() => handleRemoveTodo(id)}
+                        size="small"
+                      >
+                        <FaRegTrashAlt slot="icon" />
+                      </Button>
+                    </div>
+                  </slot>
+                </li>
+              {/each}
+            </ul>
+          </div>
+        </div>
+      {/each}
     </div>
   {/if}
 
-  <form on:submit|preventDefault={handleAddTodo}>
-    <input
-      disabled={isAdding}
-      placeholder="New Todo"
-      name="todo-item"
-      bind:this={input}
-      type="text"
-      bind:value={inputText}
-    />
-    <Button type="submit" disabled={!inputText || isAdding}>Add</Button>
-  </form>
-  <Button on:click={() => dispatch('clearTodos')} disabled={todos?.length === 0}
-    >Clear list</Button
-  >
+  <div class="form-section">
+    <form on:submit|preventDefault={handleAddTodo}>
+      <input
+        disabled={isAdding}
+        placeholder="New Todo"
+        name="todo-item"
+        bind:this={input}
+        type="text"
+        bind:value={inputText}
+      />
+      <Button type="submit" disabled={!inputText || isAdding}>Add</Button>
+    </form>
+    <Button
+      on:click={() => dispatch('clearTodos')}
+      disabled={todos?.length === 0}>Clear list</Button
+    >
+  </div>
 </div>
 
 <style lang="scss">
+  .main-section {
+    display: flex;
+    gap: 0.5rem;
+    height: 20rem;
+  }
+
+  .list-section {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+
+  .form-section {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
   .todo-list-wrapper {
     display: flex;
     flex-direction: column;
@@ -136,9 +166,6 @@
     padding: 1rem;
     border: 1px solid #767676;
     border-radius: 2px;
-    min-width: 20rem;
-    max-width: 24rem;
-    height: 26rem;
   }
 
   .todo-list {
@@ -221,6 +248,7 @@
 
   .completed {
     background-color: rgb(222, 222, 222);
+    opacity: 0.8;
   }
 
   .completed label {
