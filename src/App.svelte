@@ -20,13 +20,20 @@
       bind:value={duration}
       max={4000}
       min={2000}
-      step={10}
+      step={50}
     />
     {duration}ms
   </label>
 
   {#if showButton}
-    <button use:longpress={{ duration }}> Click </button>
+    <button
+      use:longpress={{ duration }}
+      on:longpress={() => {
+        alert('pressed');
+      }}
+    >
+      Hold
+    </button>
   {/if}
 </div>
 
