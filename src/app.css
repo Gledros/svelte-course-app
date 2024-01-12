@@ -12,8 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --buttonBgColor: orange;
-  --buttonTextColor: green;
+  --buttonBgColor: rgb(103, 230, 247);
+  --buttonTextColor: rgb(0, 0, 0);
 }
 
 a {

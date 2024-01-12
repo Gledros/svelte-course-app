@@ -78,7 +78,7 @@
 
     &:hover:enabled {
       background-color: variables.$color_secondary;
-      color: black;
+      color: variables.$color_primary;
     }
 
     .icon-normal {
