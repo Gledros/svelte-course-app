@@ -4,7 +4,7 @@
   // @ts-ignore
   import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
   import { flip } from 'svelte/animate';
-  import { fade } from 'svelte/transition';
+  import { crossfade, scale } from 'svelte/transition';
 
   afterUpdate(() => {
     if (scrollOnAdd) {
@@ -30,6 +30,13 @@
   let inputText = '';
   let autoscroll = false;
   let previousTodos = todos;
+
+  const [send, receive] = crossfade({
+    duration: 500,
+    fallback(node) {
+      return scale(node, { delay: 300, duration: 300 });
+    },
+  });
 
   $: {
     autoscroll = todos?.length > previousTodos?.length;
@@ -82,7 +89,11 @@
                 {@const { id, completed, title } = todo}
                 <li animate:flip={{ delay: 300, duration: 300 }}>
                   <slot {todo}>
-                    <div class:completed transition:fade={{ duration: 750 }}>
+                    <div
+                      class:completed
+                      in:receive={{ key: id }}
+                      out:send={{ key: id }}
+                    >
                       <label for={id}>
                         <input
                           {id}
