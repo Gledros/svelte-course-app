@@ -1,14 +1,36 @@
 <svelte:options immutable={true} />
 
 <script>
-  import tippy from './lib/actions/tippy';
+  import { onMount } from 'svelte';
+  import Home from './lib/pages/Home.svelte';
+  import Settings from './lib/pages/Settings.svelte';
 
-  let content = 'some string';
+  onMount(onRouteChange);
+
+  let page = '';
+
+  function onRouteChange() {
+    const path = window.location.hash.slice(1);
+
+    if (path === '/') page = 'home';
+    else if (path === '/settings') page = 'settings';
+    else window.location.hash = '/';
+  }
 </script>
 
+<svelte:window on:hashchange={onRouteChange} />
+
+<nav>
+  <a href="#/">Home</a>
+  <a href="#/settings">Settings</a>
+</nav>
+
 <div>
-  <input type="text" bind:value={content} />
-  <button use:tippy={{ content, placement: 'right' }}> Button </button>
+  {#if page === 'home'}
+    <Home />
+  {:else if page === 'settings'}
+    <Settings />
+  {/if}
 </div>
 
 <style>
