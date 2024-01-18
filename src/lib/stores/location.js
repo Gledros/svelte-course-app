@@ -2,7 +2,7 @@ import { readable } from 'svelte/store';
 
 const location = readable(null, (set) => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         set([latitude, longitude]);
