@@ -31,6 +31,13 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  font-family: 'Montserrat', sans-serif;
+
+  transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
 }
 
 h1 {
