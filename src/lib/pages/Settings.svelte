@@ -6,15 +6,22 @@
 
 <h2>Settings</h2>
 
-<button
-  on:click={() => {
-    $settings.colorScheme =
-      $settings.colorScheme === 'light' ? 'dark' : 'light';
-  }}
->
+<button on:click={() => settings.toggleColorScheme()}>
   <FaLightbulb />
   <p>{$settings.colorScheme} theme</p>
 </button>
+
+<button on:click={() => settings.updateSetting('language', Math.random())}>
+  <p>Update language</p>
+</button>
+
+<button on:click={() => settings.reset()}>
+  <p>Reset settings</p>
+</button>
+
+{$settings.colorScheme}
+<br />
+{$settings.language}
 
 <style>
   button {
