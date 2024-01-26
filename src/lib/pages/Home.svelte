@@ -11,10 +11,13 @@
 
 <button
   on:click={() => {
-    boxProps.set({
-      width: Math.random() * 20,
-      height: Math.random() * 20,
-    });
+    boxProps.set(
+      {
+        width: Math.random() * 20,
+        height: Math.random() * 20,
+      },
+      { soft: 2 }, // Will ignore the default timing and utilize this in seconds. If the key is 'hard', it will become a writable store (no animation)
+    );
   }}>Random box</button
 >
 
