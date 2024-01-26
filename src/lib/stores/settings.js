@@ -3,11 +3,11 @@ import { writable } from 'svelte/store';
 function createSettingsStore() {
   const defaultSettings = {
     colorScheme: 'dark',
-    language: 'english',
+    language: 'en',
     fontSize: 12,
   };
 
-  const { subscribe, set, update } = writable(defaultSettings);
+  const { subscribe, set, update } = writable({ ...defaultSettings });
 
   return {
     subscribe,
