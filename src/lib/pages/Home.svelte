@@ -1,26 +1,77 @@
 <script>
-  import { spring } from 'svelte/motion';
+  import Button from '../Button.svelte';
+  import { Form, Field } from '../Form';
+  let values = { username: '', email: '', password: '' };
 
-  const boxProps = spring(
-    { width: 5, height: 5 },
-    { stiffness: 0.1, damping: 0.3 }, // To control the 'spring' specs of the store
-  );
+  let isSubmitting = false;
+  let errors = {};
+
+  function validate() {
+    const errors = {};
+    if (!values.username) errors.username = 'The username is required';
+    if (!values.email) errors.email = 'The email is required';
+    if (!values.password) errors.password = 'The password is required';
+
+    if (
+      values.email &&
+      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)
+    ) {
+      errors.email = 'The email is invalid';
+    }
+
+    return errors;
+  }
 </script>
 
 <h2>Home</h2>
 
-<button
-  on:click={() => {
-    boxProps.set(
-      {
-        width: Math.random() * 20,
-        height: Math.random() * 20,
-      },
-      { soft: 2 }, // Will ignore the default timing and utilize this in seconds. If the key is 'hard', it will become a writable store (no animation)
-    );
-  }}>Random box</button
->
+{#if errors.length > 0}
+  <p>{errors.username}</p>
+{/if}
 
-<div
-  style="transform-origin: 0 0; width:{$boxProps.width}rem; height:{$boxProps.height}rem; transform: scale({$boxProps}); background-color: rebeccapurple"
-></div>
+<form
+  on:submit|preventDefault={() => {
+    errors = validate();
+
+    if (Object.keys(errors).length > 0) return;
+
+    isSubmitting = true;
+
+    setTimeout(() => {
+      isSubmitting = false;
+    }, 1000);
+  }}
+>
+  <label for="username">username:</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    bind:value={values.username}
+  />
+  <label for="email">email:</label>
+  <input type="email" id="email" name="email" bind:value={values.email} />
+  <label for="password">password:</label>
+  <input
+    type="password"
+    id="password"
+    name="password"
+    bind:value={values.password}
+  />
+  <span />
+  <Button size="small" disabled={isSubmitting}>Submit</Button>
+</form>
+
+<style>
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    justify-items: center;
+  }
+
+  label {
+    width: 100%;
+    text-align: end;
+  }
+</style>
