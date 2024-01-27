@@ -25,53 +25,17 @@
 
 <h2>Home</h2>
 
-{#if errors.length > 0}
-  <p>{errors.username}</p>
-{/if}
-
-<form
-  on:submit|preventDefault={() => {
-    errors = validate();
-
-    if (Object.keys(errors).length > 0) return;
-
-    isSubmitting = true;
-
-    setTimeout(() => {
-      isSubmitting = false;
-    }, 1000);
-  }}
+<Form
+  on:submit={() => {}}
+  initialValues={{ username: 'Test', email: 'test@test.com' }}
 >
-  <label for="username">username:</label>
-  <input
-    type="text"
-    id="username"
-    name="username"
-    bind:value={values.username}
+  <Field name="username" label="username" placeholder="John Doe" {validate} />
+  <Field
+    name="email"
+    label="email"
+    type="email"
+    placeholder="john@doe.com"
+    {validate}
   />
-  <label for="email">email:</label>
-  <input type="email" id="email" name="email" bind:value={values.email} />
-  <label for="password">password:</label>
-  <input
-    type="password"
-    id="password"
-    name="password"
-    bind:value={values.password}
-  />
-  <span />
-  <Button size="small" disabled={isSubmitting}>Submit</Button>
-</form>
-
-<style>
-  form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-    justify-items: center;
-  }
-
-  label {
-    width: 100%;
-    text-align: end;
-  }
-</style>
+  <Field name="password" label="password" type="password" {validate} />
+</Form>
