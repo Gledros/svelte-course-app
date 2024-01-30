@@ -1,5 +1,4 @@
 <script>
-  import Button from '../Button.svelte';
   import { Form, Field } from '../Form';
   let values = { username: '', email: '', password: '' };
 
@@ -26,7 +25,9 @@
 <h2>Home</h2>
 
 <Form
-  on:submit={() => {}}
+  on:submit={(event) => {
+    console.log(event.detail);
+  }}
   initialValues={{ username: 'Test', email: 'test@test.com' }}
 >
   <Field name="username" label="username" placeholder="John Doe" {validate} />
@@ -38,4 +39,5 @@
     {validate}
   />
   <Field name="password" label="password" type="password" {validate} />
+  <Field name="password2" label="password 2" type="password" {validate} />
 </Form>
