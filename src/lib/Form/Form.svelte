@@ -13,16 +13,23 @@
 </script>
 
 <form on:submit|preventDefault={() => dispatch('submit', $form.values)}>
-  <slot />
-  <span />
+  <div>
+    <slot />
+  </div>
   <Button type="submit">Submit</Button>
 </form>
 
 <style>
   form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
-    justify-items: center;
   }
 </style>
