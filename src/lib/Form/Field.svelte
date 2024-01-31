@@ -12,6 +12,16 @@
   const formStore = getContext(formKey);
 
   const id = uuid();
+
+  const handleInput = (event) => {
+    const value = event.currentTarget.value;
+
+    if (validate && validate(value))
+      $formStore.errors[name] = validate(value, label);
+    else delete $formStore.errors[name];
+
+    $formStore.values[name] = value;
+  };
 </script>
 
 {#if label}
@@ -23,12 +33,30 @@
   {id}
   {placeholder}
   value={$formStore.values[name] || ''}
-  on:input={(event) => ($formStore.values[name] = event.currentTarget.value)}
+  on:input={handleInput}
 />
+{#if $formStore.errors[name]}
+  <span />
+  <p class="error">{$formStore.errors[name]}</p>
+{/if}
 
 <style>
   label {
     width: 100%;
     text-align: end;
+  }
+
+  input {
+    max-width: 10rem;
+  }
+
+  p {
+    text-align: left;
+  }
+
+  .error {
+    margin: 0 0;
+    color: red;
+    font-weight: bold;
   }
 </style>
