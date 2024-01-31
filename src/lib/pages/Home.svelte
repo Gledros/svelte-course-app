@@ -1,5 +1,6 @@
 <script>
   import { Form, Field } from '../Form';
+  import { validateRequiredField, validateEmail } from '../utils/validation';
   let values = { username: '', email: '', password: '' };
 
   let isSubmitting = false;
@@ -30,14 +31,25 @@
   }}
   initialValues={{ username: 'Test', email: 'test@test.com' }}
 >
-  <Field name="username" label="username" placeholder="John Doe" {validate} />
+  <Field
+    name="username"
+    label="username"
+    placeholder="John Doe"
+    validate={validateRequiredField}
+  />
   <Field
     name="email"
     label="email"
     type="email"
     placeholder="john@doe.com"
-    {validate}
+    validate={(value, label) => {
+      return validateRequiredField(value, label) || validateEmail(value, label);
+    }}
   />
-  <Field name="password" label="password" type="password" {validate} />
-  <Field name="password2" label="password 2" type="password" {validate} />
+  <Field
+    name="password"
+    label="password"
+    type="password"
+    validate={validateRequiredField}
+  />
 </Form>
