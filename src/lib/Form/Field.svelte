@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext, onMount } from 'svelte';
   import { v4 as uuid } from 'uuid';
   import formKey from './form-key';
 
@@ -9,8 +9,14 @@
   export let type = 'text';
   export let validate = undefined;
 
-  const formStore = getContext(formKey);
+  onMount(() => {
+    const value = $formStore.values[name];
 
+    if (validate && validate(value))
+      $formStore.errors[name] = validate(value, label);
+  });
+
+  const formStore = getContext(formKey);
   const id = uuid();
 
   const handleInput = (event) => {
@@ -35,7 +41,7 @@
   value={$formStore.values[name] || ''}
   on:input={handleInput}
 />
-{#if $formStore.errors[name]}
+{#if $formStore.errors[name] && $formStore.showErrors}
   <span />
   <p class="error">{$formStore.errors[name]}</p>
 {/if}

@@ -5,14 +5,25 @@
   import Button from '../Button.svelte';
 
   export let initialValues = {};
-  const form = writable({ values: initialValues, errors: {} });
+  const formStore = writable({
+    values: initialValues,
+    errors: {},
+    showErrors: false,
+  });
 
   const dispatch = createEventDispatcher();
 
-  setContext(formKey, form);
+  setContext(formKey, formStore);
+
+  const handleSubmit = (_) => {
+    if (Object.keys($formStore.errors).length === 0) {
+      dispatch('submit', $formStore.values);
+      $formStore.showErrors = false;
+    } else $formStore.showErrors = true;
+  };
 </script>
 
-<form on:submit|preventDefault={() => dispatch('submit', $form.values)}>
+<form on:submit|preventDefault={handleSubmit}>
   <div>
     <slot />
   </div>
