@@ -1,4 +1,5 @@
 <script>
+  import Button from '../Button.svelte';
   import { Form, Field } from '../Form';
   import { validateRequiredField, validateEmail } from '../utils/validation';
   let values = { username: '', email: '', password: '' };
@@ -30,6 +31,7 @@
     console.log(event.detail);
   }}
   initialValues={{ username: 'Test', email: 'test@test.com' }}
+  let:hasErrors
 >
   <Field
     name="username"
@@ -52,4 +54,15 @@
     type="password"
     validate={validateRequiredField}
   />
+  <div>
+    <Button type="submit" disabled={hasErrors}>Submit</Button>
+  </div>
 </Form>
+
+<style>
+  div {
+    grid-column-end: span 2;
+    display: flex;
+    justify-content: center;
+  }
+</style>

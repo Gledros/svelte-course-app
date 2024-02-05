@@ -2,9 +2,8 @@
   import { createEventDispatcher, setContext } from 'svelte';
   import { writable } from 'svelte/store';
   import formKey from './form-key';
-  import Button from '../Button.svelte';
-
   export let initialValues = {};
+
   const formStore = writable({
     values: initialValues,
     errors: {},
@@ -24,21 +23,11 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-  <div>
-    <slot />
-  </div>
-  <Button type="submit">Submit</Button>
+  <slot hasErrors={Object.keys($formStore.errors).length > 0} />
 </form>
 
 <style>
   form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
