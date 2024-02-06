@@ -16,6 +16,8 @@
       $formStore.errors[name] = validate(value, label);
   });
 
+  let inputHandled = false;
+
   const formStore = getContext(formKey);
   const id = uuid();
 
@@ -27,6 +29,7 @@
     else delete $formStore.errors[name];
 
     $formStore.values[name] = value;
+    if (!inputHandled) inputHandled = true;
   };
 </script>
 
@@ -41,9 +44,11 @@
   value={$formStore.values[name] || ''}
   on:input={handleInput}
 />
-{#if $formStore.errors[name] && $formStore.showErrors}
+{#if $formStore.errors[name] && inputHandled}
   <span />
-  <p class="error">{$formStore.errors[name]}</p>
+  <slot name="error" error={$formStore.errors[name]}>
+    <p class="error">{$formStore.errors[name]}</p>
+  </slot>
 {/if}
 
 <style>
