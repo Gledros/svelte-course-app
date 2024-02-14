@@ -1,57 +1,50 @@
 <script>
-  import Button from '../Button.svelte';
-  import { Form, Field } from '../Form';
-  import { validateRequiredField, validateEmail } from '../utils/validation';
+  import { onMount } from 'svelte';
+  import Konva from 'konva';
+
+  let container;
+
+  onMount(() => {
+    const stage = new Konva.Stage({
+      container,
+      width: 300,
+      height: 350,
+    });
+
+    const layer = new Konva.Layer();
+    const rect = new Konva.Rect({
+      x: 20,
+      y: 20,
+      width: 100,
+      height: 60,
+      fill: '#138168',
+      strokeWidth: 4,
+    });
+
+    const rect2 = new Konva.Rect({
+      x: 140,
+      y: 20,
+      width: 50,
+      height: 160,
+      fill: 'aqua',
+      strokeWidth: 0,
+      shadowColor: 'rgba(1,1,1,0.5)',
+      shadowBlur: 10,
+      cornerRadius: 5,
+    });
+
+    layer.add(rect);
+    layer.add(rect2);
+    stage.add(layer);
+  });
 </script>
 
 <h2>Home</h2>
 
-<Form
-  on:submit={(event) => {
-    console.log(event.detail);
-  }}
-  initialValues={{ username: 'Test', email: 'test@test.com' }}
-  let:hasErrors
->
-  <Field
-    name="username"
-    label="username"
-    placeholder="John Doe"
-    validate={validateRequiredField}
-  >
-    <p slot="error" let:error>{error}</p>
-  </Field>
-  <Field
-    name="email"
-    label="email"
-    type="email"
-    placeholder="john@doe.com"
-    validate={(value, label) => {
-      return validateRequiredField(value, label) || validateEmail(value, label);
-    }}
-  />
-  <Field
-    name="password"
-    label="password"
-    type="password"
-    validate={validateRequiredField}
-  />
-  <div>
-    <Button type="submit" disabled={hasErrors}>Submit</Button>
-  </div>
-</Form>
+<div bind:this={container} />
 
 <style>
   div {
-    grid-column-end: span 2;
-    display: flex;
-    justify-content: center;
-  }
-
-  p {
-    text-align: left;
-    color: orange;
-    margin: 0;
-    font-weight: bold;
+    background-color: white;
   }
 </style>
