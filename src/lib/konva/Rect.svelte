@@ -1,6 +1,6 @@
 <script>
   import Konva from 'konva';
-  import { getContext } from 'svelte';
+  import { getContext, onDestroy } from 'svelte';
   import { layerKey } from './context-keys';
 
   export let x, y, fill, width, height, stroke, strokeWidth;
@@ -18,4 +18,8 @@
   });
 
   layer.add(rect);
+
+  onDestroy(() => {
+    rect.destroy();
+  });
 </script>
