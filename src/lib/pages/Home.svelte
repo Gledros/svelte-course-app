@@ -1,4 +1,5 @@
 <script>
+  import Button from '../Button.svelte';
   import Layer from '../konva/Layer.svelte';
   import Rect from '../konva/Rect.svelte';
   import Stage from '../konva/Stage.svelte';
@@ -6,6 +7,7 @@
   let showCanvas = true;
   let x = 20;
   let width = 300;
+  let rect1, rect2;
 </script>
 
 <h2>Home</h2>
@@ -19,6 +21,16 @@
 <label for="stageWidth"
   ><input type="range" bind:value={width} min={100} max={600} /> Width value</label
 >
+<Button
+  on:click={() => {
+    console.log('rect1', rect1.rect.getAttrs());
+    console.log('rect2', rect2.rect.getAttrs());
+    console.log('rect2', rect2.rect.getStage());
+    rect2.rect.x(100);
+  }}
+>
+  Get rect info
+</Button>
 
 <Stage {width} height={350}>
   {#if showCanvas}
@@ -29,6 +41,7 @@
     >
       <Rect
         {x}
+        bind:this={rect1}
         y={20}
         fill="blue"
         width={100}
@@ -53,6 +66,7 @@
   {/if}
   <Layer {x}>
     <Rect
+      bind:this={rect2}
       x={60}
       y={60}
       fill="orange"

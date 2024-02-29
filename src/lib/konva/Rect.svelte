@@ -5,11 +5,11 @@
 
   export let x, y, fill, width, height, stroke, strokeWidth;
 
+  export const rect = new Konva.Rect($$props);
+
   const layer = getContext(layerKey);
 
   const dispatch = createEventDispatcher();
-
-  const rect = new Konva.Rect($$props);
 
   layer.on('click mousedown', (event) => {
     dispatch(event.type, event);
