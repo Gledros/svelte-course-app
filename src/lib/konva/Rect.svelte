@@ -7,17 +7,11 @@
 
   const layer = getContext(layerKey);
 
-  const rect = new Konva.Rect({
-    x,
-    y,
-    width,
-    height,
-    fill,
-    stroke,
-    strokeWidth,
-  });
+  const rect = new Konva.Rect($$props);
 
   layer.add(rect);
+
+  $: rect.setAttrs({ x, y, width, height, fill, stroke, strokeWidth });
 
   onDestroy(() => {
     rect.destroy();

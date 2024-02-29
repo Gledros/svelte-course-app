@@ -4,6 +4,8 @@
   import Stage from '../konva/Stage.svelte';
 
   let showCanvas = true;
+  let x = 20;
+  let width = 300;
 </script>
 
 <h2>Home</h2>
@@ -11,12 +13,18 @@
 <label for="showCanvas"
   ><input id="showCanvas" type="checkbox" bind:checked={showCanvas} /> Display canvas</label
 >
+<label for="rectXRange"
+  ><input type="range" bind:value={x} min={0} max={300} /> X value</label
+>
+<label for="stageWidth"
+  ><input type="range" bind:value={width} min={100} max={600} /> Width value</label
+>
 
-<Stage width={300} height={350}>
+<Stage {width} height={350}>
   {#if showCanvas}
     <Layer draggable>
       <Rect
-        x={20}
+        {x}
         y={20}
         fill="blue"
         width={100}
@@ -35,7 +43,7 @@
       />
     </Layer>
   {/if}
-  <Layer>
+  <Layer {x}>
     <Rect
       x={60}
       y={60}
@@ -43,7 +51,7 @@
       width={100}
       height={100}
       stroke="purple"
-      strokeWidth={4}
+      strokeWidth={3}
     />
   </Layer>
 </Stage>

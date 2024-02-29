@@ -8,6 +8,7 @@
   const { getStage } = getContext(stageKey);
 
   const layer = new Konva.Layer({
+    ...$$props,
     draggable,
   });
 
@@ -16,6 +17,8 @@
   const stage = getStage();
 
   stage.add(layer);
+
+  $: layer.setAttrs($$props);
 
   onDestroy(() => {
     layer.destroy();

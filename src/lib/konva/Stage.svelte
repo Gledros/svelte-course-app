@@ -3,8 +3,7 @@
   import { onDestroy, onMount, setContext } from 'svelte';
   import { stageKey } from './context-keys';
 
-  export let width;
-  export let height;
+  export let width, height;
   export let backgroundColor = 'white';
 
   let container, stage;
@@ -16,8 +15,11 @@
       container,
       width,
       height,
+      ...$$props,
     });
   });
+
+  $: if (stage) stage.setAttrs($$props);
 
   onDestroy(() => {
     if (stage) stage.destroy();
