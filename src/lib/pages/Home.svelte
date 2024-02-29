@@ -22,7 +22,11 @@
 
 <Stage {width} height={350}>
   {#if showCanvas}
-    <Layer draggable>
+    <Layer
+      draggable
+      on:dragmove={(event) => console.log('dragged', event)}
+      on:click={(event) => console.log('clicked', event)}
+    >
       <Rect
         {x}
         y={20}
@@ -31,6 +35,8 @@
         height={100}
         stroke={undefined}
         strokeWidth={4}
+        on:click={(event) => console.log('blue clicked')}
+        on:mousedown={(event) => console.log('blue mousedown')}
       />
       <Rect
         x={40}
@@ -40,6 +46,8 @@
         height={100}
         stroke={undefined}
         strokeWidth={4}
+        on:click={(event) => console.log('green clicked')}
+        on:mousedown={(event) => console.log('green mousedown')}
       />
     </Layer>
   {/if}
@@ -52,6 +60,8 @@
       height={100}
       stroke="purple"
       strokeWidth={3}
+      on:click={(event) => console.log('orange clicked')}
+      on:mousedown={(event) => console.log('orange mousedown')}
     />
   </Layer>
 </Stage>
