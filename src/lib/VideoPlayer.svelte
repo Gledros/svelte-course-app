@@ -1,5 +1,13 @@
 <script context="module">
   let videoPlayers = new Set();
+
+  export function playAll() {
+    videoPlayers.forEach((currentPlayer) => currentPlayer.play());
+  }
+
+  export function pauseAll() {
+    videoPlayers.forEach((currentPlayer) => currentPlayer.pause());
+  }
 </script>
 
 <script>
@@ -16,6 +24,8 @@
 
   // @ts-ignore
   const pause = () => (paused = true);
+  // @ts-ignore
+  const play = () => (paused = false);
 
   onDestroy(() => {
     videoPlayers.delete(player);
@@ -25,11 +35,6 @@
 <!-- svelte-ignore a11y-media-has-caption -->
 <video
   bind:this={player}
-  on:play={() => {
-    videoPlayers.forEach((currentPlayer) => {
-      if (player !== currentPlayer) currentPlayer.pause();
-    });
-  }}
   class:playing={!paused}
   {src}
   controls
