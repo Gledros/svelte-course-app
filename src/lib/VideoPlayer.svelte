@@ -1,51 +1,43 @@
+<script context="module">
+  let videoPlayers = new Set();
+</script>
+
 <script>
-  import Button from './Button.svelte';
+  import { onDestroy, onMount } from 'svelte';
 
   export let src = undefined;
 
   let paused = true,
-    currentTime = 0,
-    volume = 0;
+    player;
+
+  onMount(() => {
+    videoPlayers.add(player);
+  });
+
+  // @ts-ignore
+  const pause = () => (paused = true);
+
+  onDestroy(() => {
+    videoPlayers.delete(player);
+  });
 </script>
 
-<div>
-  <!-- svelte-ignore a11y-media-has-caption -->
-  <video
-    class:playing={!paused}
-    {src}
-    controls
-    muted
-    bind:paused
-    bind:volume
-    bind:currentTime
-  />
-
-  <span>
-    <Button
-      on:click={() => {
-        paused = !paused;
-      }}
-    >
-      {paused ? 'Play' : 'Pause'}
-    </Button>
-
-    <p>{currentTime.toFixed(2)}</p>
-    <p>{(volume * 100).toFixed(0)}</p>
-  </span>
-</div>
+<!-- svelte-ignore a11y-media-has-caption -->
+<video
+  bind:this={player}
+  on:play={() => {
+    videoPlayers.forEach((currentPlayer) => {
+      if (player !== currentPlayer) currentPlayer.pause();
+    });
+  }}
+  class:playing={!paused}
+  {src}
+  controls
+  muted
+  bind:paused
+/>
 
 <style>
-  div {
-    display: flex;
-  }
-
-  span {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
   video.playing {
     outline: 0.25rem solid orange;
   }
